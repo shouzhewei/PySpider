@@ -17,11 +17,6 @@ class GoldSpider(Spider):
 
     _visited = set()
     _http_proxies = [
-        'http://150.236.33.7:8080',
-        'http://cnship01.mgmt.ericsson.se:8080',
-        'http://cnship02.mgmt.ericsson.se:8080',
-        'http://www-proxy.ericsson.se:8080',
-        'http://cngzip01.mgmt.ericsson.se:8080',
     ]
 
     def _get_next_proxy(self):
@@ -30,7 +25,7 @@ class GoldSpider(Spider):
         return proxy
     def _create_request(self, url, callback=None):
         request = Request(url, callback)
-        request.meta['proxy'] = self._get_next_proxy()
+        #request.meta['proxy'] = self._get_next_proxy()
         return request
 
     def __init__(self):
