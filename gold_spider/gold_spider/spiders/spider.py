@@ -11,18 +11,19 @@ import logging
 import random
 
 class GoldSpider(Spider):
-    user_agent = 'Mozilla/5.0 (Linux; Android 4.4.4; Nexus 5 Build/KTU84P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.114 Mobile Safari/537.36'
+    #user_agent = 'Mozilla/5.0 (Linux; Android 4.4.4; Nexus 5 Build/KTU84P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.114 Mobile Safari/537.36'
+    allowed_domains = ['movie.douban.com']
     start_urls = ['http://movie.douban.com/tag']
     name = 'gold'
 
     _visited = set()
-    _http_proxies = [
-    ]
+    _http_proxies = []
 
     def _get_next_proxy(self):
         proxy = random.choice(self._http_proxies)
         #proxy = 'http://127.0.0.1:8118'
         return proxy
+
     def _create_request(self, url, callback=None):
         request = Request(url, callback)
         #request.meta['proxy'] = self._get_next_proxy()
@@ -32,6 +33,7 @@ class GoldSpider(Spider):
         reload(sys)
         sys.setdefaultencoding('utf-8')
 
+    # return an iterable with the first Requests to crawl for this spider
     def start_requests(self):
         for url in self.start_urls:
             request = self._create_request(url)
@@ -81,7 +83,7 @@ class GoldSpider(Spider):
         return False
 
     def parse(self, response):
-        response_url =  response.url
+        response_url = response.url
         selector = Selector(response)
         all_link = selector.xpath(u"//div[span/text() = '类型']/a")
         for a in all_link:
